@@ -14,7 +14,12 @@
     document.documentElement.dataset.theme = t;
   })();
 </script>
-<link rel="stylesheet" href="src/style.css">
+<script>
+  /* 资源地址带上页面的 Last-Modified 作为版本号：GitHub Pages 每次部署所有文件的时间戳一致，
+     所以部署后样式和脚本会立刻更新，不必等浏览器 10 分钟的缓存过期。 */
+  var V = encodeURIComponent(document.lastModified);
+  document.write('<link rel="stylesheet" href="src/style.css?v=' + V + '">');
+</script>
 </head>
 <body>
 <header>
@@ -86,11 +91,10 @@
 
 <footer>原文取自维基文库《周易》。连续状态下的"叠加卦辞"只是权重显示，并非新的经文。</footer>
 
-<script src="src/theme.js"></script>
-<script src="src/data.js"></script>
-<script src="src/divination.js"></script>
-<script src="src/stalks.js"></script>
-<script src="src/torus.js"></script>
-<script src="src/app.js"></script>
+<script>
+  ['theme', 'data', 'divination', 'stalks', 'torus', 'app'].forEach(function (n) {
+    document.write('<script src="src/' + n + '.js?v=' + V + '"><\/script>');
+  });
+</script>
 </body>
 </html>
