@@ -96,8 +96,8 @@
         ctx.strokeStyle = s.c;
         ctx.beginPath(); ctx.moveTo(s.x, s.y - half); ctx.lineTo(s.x, s.y + half); ctx.stroke();
       }
-      ctx.font = '12px "Songti SC", serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-      ctx.fillStyle = '#c2a15f'; ctx.fillText(title, M, 8);
+      ctx.font = '15px "Songti SC", serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillStyle = '#c2a15f'; ctx.fillText(title, M, 6);
       ctx.fillStyle = '#e8dcc4'; ctx.fillText(label, M, 26);
       if (pileCount) { ctx.textAlign = 'right'; ctx.fillStyle = '#7d7360'; ctx.fillText(`掛扐 ${pileCount}`, LW - M, 44); }
     }

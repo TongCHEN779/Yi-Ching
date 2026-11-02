@@ -45,7 +45,7 @@ button.primary:disabled { opacity: .5; cursor: default; }
 /* 立方体 */
 .cubes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 figure { margin: 0; text-align: center; }
-figure canvas { width: 100%; aspect-ratio: 1; background: #120f0c; border: 1px solid var(--line); border-radius: 8px; cursor: grab; touch-action: none; }
+figure canvas { width: 100%; aspect-ratio: 1; background: #120f0c; border: 1px solid var(--line); border-radius: 8px; cursor: grab; touch-action: pan-y; }
 figure canvas:active { cursor: grabbing; }
 figcaption { font-size: 12px; color: var(--dim); }
 
@@ -89,9 +89,11 @@ footer { text-align: center; color: var(--dim); font-size: 12px; padding: 12px 0
 .tabs button { flex: 1; font: inherit; font-size: 15px; padding: 7px; color: var(--dim); background: transparent; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
 .tabs button.on { color: var(--ink); border-color: var(--gold); background: #231d14; }
 .tabs button small { margin-left: .4em; }
-#view-torus canvas { width: 100%; display: block; background: #120f0c; border: 1px solid var(--line); border-radius: 8px; touch-action: none; }
-#tori { aspect-ratio: 3 / 1.15; cursor: grab; margin-bottom: 8px; }
+#view-torus canvas { width: 100%; display: block; background: #120f0c; border: 1px solid var(--line); border-radius: 8px; }
+#rings { touch-action: none; }
+#tori { aspect-ratio: 3 / 1.15; cursor: grab; margin-bottom: 8px; touch-action: pan-y; }
 #rings { aspect-ratio: 3 / 2; cursor: pointer; }
+@media (max-width: 600px) { #rings { aspect-ratio: 3 / 2.3; } }
 .flow { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
 .flow button { font: inherit; padding: 6px 14px; color: var(--ink); background: #3a1d17; border: 1px solid var(--red); border-radius: 6px; cursor: pointer; white-space: nowrap; }
 .flow small { font-size: 12px; }
@@ -100,3 +102,38 @@ footer { text-align: center; color: var(--dim); font-size: 12px; padding: 12px 0
 #grid .cell span { z-index: 1; }
 h4 { margin: 14px 0 6px; font-size: 13px; color: var(--gold); letter-spacing: .15em; font-weight: 600; }
 h4 small { margin-left: .5em; letter-spacing: 0; font-weight: 400; }
+
+/* 摘要条：仅窄屏 */
+.chip { display: none; }
+
+/* 平板 / 手机：单列，先起卦，再看卦辞，最后探索空间 */
+@media (max-width: 1100px) {
+  #ritual { order: 1; } #text { order: 2; } #space { order: 3; }
+  .chip { display: block; position: sticky; top: 0; z-index: 5; margin: -16px -18px 10px; padding: 8px 18px; background: #231d14; border-bottom: 1px solid var(--gold); border-radius: 10px 10px 0 0; color: var(--ink); font-size: 15px; letter-spacing: .05em; }
+}
+@media (max-width: 600px) {
+  body { font-size: 15px; }
+  header { padding: 18px 16px 4px; }
+  h1 { font-size: 28px; }
+  .sub { font-size: 13px; }
+  main { padding: 10px 12px; gap: 12px; }
+  .panel { padding: 14px 14px 16px; }
+  .chip { margin: -14px -14px 10px; padding: 8px 14px; }
+  .seg { gap: 8px; }
+  .seg label { padding: 6px 4px; }
+  button.primary { padding: 14px; font-size: 20px; }
+  .yao .bar { height: 30px; }
+  .yao .bar i { top: 8px; bottom: 8px; }
+  .yao { grid-template-columns: 22px 1fr 38px; }
+  .cubes { grid-template-columns: 1fr; }
+  figure canvas { aspect-ratio: 4 / 3; }
+  .tabs button { padding: 10px 4px; }
+  .tabs button small { display: block; margin: 0; }
+  #tcontrol input, .flow button { min-height: 32px; }
+  .flow { flex-direction: column; align-items: stretch; gap: 6px; }
+  .log { max-height: 180px; }
+  #grid { gap: 1px; grid-template-columns: 16px repeat(8, 1fr); }
+  #grid .cell { font-size: 15px; }
+  .card h3 { font-size: 17px; flex-wrap: wrap; }
+  h2 small { display: block; margin: 2px 0 0; }
+}

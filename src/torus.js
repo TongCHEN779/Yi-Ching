@@ -25,7 +25,8 @@
     const ringIndex = (col, row) => (row === 1 ? PAIRS[col][0] : PAIRS[col][1]);
     const gridIdx = (i) => { const col = PAIRS.findIndex((p) => p.includes(i)); return { col, row: PAIRS[col][0] === i ? 1 : 0 }; };
     const pos = (i) => {
-      const { col, row } = gridIdx(i), w = rings.width / 3, h = rings.height / 2, R = Math.min(w, h) * 0.34;
+      const { col, row } = gridIdx(i), w = rings.width / 3, h = rings.height / 2, dpr = window.devicePixelRatio || 1;
+      const R = Math.max(10 * dpr, Math.min(w / 2 - 26 * dpr, h / 2 - 22 * dpr));  // 给 7/9/8/6 标签留位
       return { cx: w * (col + 0.5), cy: h * (row + 0.5), R, w, h };
     };
 
@@ -123,6 +124,8 @@
       view.drag = { x: e.clientX, y: e.clientY };
     });
     tori.addEventListener('pointerup', () => { view.drag = null; });
+    tori.addEventListener('pointercancel', () => { view.drag = null; });
+    rings.addEventListener('pointercancel', () => { grab = null; });
 
     return { draw() { drawRings(); drawTori(); } };
   }

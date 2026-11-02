@@ -129,7 +129,7 @@
       if (!canvas.offsetParent) return;
       if (!view.drag) view.ry += 0.003;
       const W = canvas.width, Ht = canvas.height, dpr = window.devicePixelRatio || 1;
-      const scale = W * 0.27;
+      const scale = Math.min(W, Ht) * 0.27;
       const T = (p) => ({ ...p, X: W / 2 + p.x * scale, Y: Ht / 2 + p.y * scale });
       ctx.clearRect(0, 0, W, Ht);
       ctx.font = `${13 * dpr}px "Songti SC", serif`;
@@ -178,6 +178,7 @@
       view.ry += dx * 0.01; view.rx = Math.max(-1.4, Math.min(1.4, view.rx + dy * 0.01));
       view.drag = { x: e.clientX, y: e.clientY };
     });
+    canvas.addEventListener('pointercancel', () => { view.drag = null; });   // 触屏上浏览器接管纵向滚动
     canvas.addEventListener('pointerup', (e) => {
       const wasClick = !view.moved;
       view.drag = null;
@@ -272,6 +273,12 @@
     else { rule = '六爻皆变，以之卦卦辞断。'; lines.push(gua(zhi)); }
     return { rule, lines, ben, zhi };
   }
+  // 窄屏下卦辞排在空间视图之前，用一条吸顶的摘要告诉用户当前落在哪一卦
+  function renderChip(w, wz) {
+    const top = (ws) => { const [h, p] = H.map((h) => [h, ws[h.bits]]).sort((a, b) => b[1] - a[1])[0]; return `${glyph(h.n)} ${h.name} ${Math.round(p * 100)}%`; };
+    const t = wz ? `${top(w)} → ${top(wz)}` : top(w);
+    if ($('#chip').textContent !== t) $('#chip').textContent = t;
+  }
   let lastReading = '';
   function renderReading() {
     const r = reading(), root = $('#reading');
@@ -336,7 +343,7 @@
   function render() {
     if (isTorus()) deriveFromPhase(); else state.z = state.x.slice();
     const w = weights(), wz = isTorus() ? weights(state.z) : null;
-    updateControls(); renderYao(); renderGrid(w, wz); renderCards(w, wz); renderReading();
+    updateControls(); renderYao(); renderGrid(w, wz); renderCards(w, wz); renderReading(); renderChip(w, wz);
   }
 
   function setMode(m) {
