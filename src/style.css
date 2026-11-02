@@ -18,7 +18,6 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--s
 header { padding: 28px 24px 8px; text-align: center; position: relative; }
 #theme { position: absolute; top: 14px; right: 18px; width: 38px; height: 38px; font-size: 18px; line-height: 1; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 50%; cursor: pointer; }
 #theme:hover { border-color: var(--gold); }
-body { transition: background-color .2s, color .2s; }
 h1 { margin: 0; font-size: 34px; letter-spacing: .4em; font-weight: 600; }
 h1 span { color: var(--red); margin: 0 .1em; }
 .sub { color: var(--dim); margin: 6px 0 0; font-size: 14px; }
