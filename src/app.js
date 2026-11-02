@@ -16,6 +16,7 @@
   const LINE_NAMES = ['初', '二', '三', '四', '五', '上'];
   const glyph = (n) => String.fromCodePoint(0x4dc0 + n - 1);
   const $ = (s) => document.querySelector(s);
+  const TH = () => window.Theme.c;
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   const state = {
@@ -140,7 +141,7 @@
         return { name, bits, sym, ...p, w: triWeight(offset, bits) };
       });
       // 棱：汉明距离 1
-      ctx.strokeStyle = 'rgba(194,161,95,.35)'; ctx.lineWidth = dpr;
+      ctx.strokeStyle = `rgba(${TH().goldRgb},.35)`; ctx.lineWidth = dpr;
       for (let a = 0; a < 8; a++) for (let b = a + 1; b < 8; b++) {
         const d = [...verts[a].bits].filter((c, i) => c !== verts[b].bits[i]).length;
         if (d === 1) { ctx.beginPath(); ctx.moveTo(verts[a].X, verts[a].Y); ctx.lineTo(verts[b].X, verts[b].Y); ctx.stroke(); }
@@ -150,21 +151,21 @@
       // 到各顶点的权重连线
       for (const v of verts) {
         if (v.w < 0.02) continue;
-        ctx.strokeStyle = `rgba(209,80,58,${Math.min(0.8, v.w * 1.2)})`; ctx.lineWidth = 2 * dpr * Math.sqrt(v.w);
+        ctx.strokeStyle = `rgba(${TH().redRgb},${Math.min(0.8, v.w * 1.2)})`; ctx.lineWidth = 2 * dpr * Math.sqrt(v.w);
         ctx.beginPath(); ctx.moveTo(pt.X, pt.Y); ctx.lineTo(v.X, v.Y); ctx.stroke();
       }
       // 顶点（远的先画）
       for (const v of [...verts].sort((a, b) => b.z - a.z)) {
         const r = (5 + 11 * Math.sqrt(v.w)) * dpr * v.s;
         ctx.beginPath(); ctx.arc(v.X, v.Y, r, 0, 7);
-        ctx.fillStyle = `rgba(209,80,58,${0.25 + 0.75 * Math.sqrt(v.w)})`; ctx.fill();
-        ctx.strokeStyle = '#c2a15f'; ctx.lineWidth = dpr; ctx.stroke();
-        ctx.fillStyle = '#e8dcc4';
+        ctx.fillStyle = `rgba(${TH().redRgb},${0.25 + 0.75 * Math.sqrt(v.w)})`; ctx.fill();
+        ctx.strokeStyle = TH().gold; ctx.lineWidth = dpr; ctx.stroke();
+        ctx.fillStyle = TH().ink;
         ctx.fillText(`${v.sym}${v.name}`, v.X, v.Y - r - 5 * dpr);
       }
       ctx.beginPath(); ctx.arc(pt.X, pt.Y, 6 * dpr, 0, 7);
-      ctx.fillStyle = '#fff3d6'; ctx.fill();
-      ctx.strokeStyle = '#d1503a'; ctx.lineWidth = 2 * dpr; ctx.stroke();
+      ctx.fillStyle = TH().dot; ctx.fill();
+      ctx.strokeStyle = TH().red; ctx.lineWidth = 2 * dpr; ctx.stroke();
     }
 
     canvas.addEventListener('pointerdown', (e) => {

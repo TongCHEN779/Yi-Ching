@@ -7,7 +7,8 @@
   const LINE_NAMES = ['初', '二', '三', '四', '五', '上'];
   const NAMES = ['少阳', '老阳', '少阴', '老阴'];
   const VALS = [7, 9, 8, 6];
-  const ARC_COL = ['#c2a15f', '#d1503a', '#4d4538', '#8a3a2c'];
+  const T = () => root.Theme.c;
+  const arcCol = (k) => [T().arcSY, T().arcLY, T().arcSN, T().arcLN][k];
   const PAIRS = [[0, 3], [1, 4], [2, 5]]; // 初应四、二应五、三应上
   // p → 画布角度：p=0 在左(少阳)，0.25 在上(老阳)，0.5 在右(少阴)，0.75 在下(老阴)，顺时针
   const ang = (p) => Math.PI + 2 * Math.PI * p;
@@ -39,17 +40,17 @@
         for (let k = 0; k < 4; k++) {
           const a0 = ang(k / 4 - 0.125), a1 = ang(k / 4 + 0.125);
           ctx.beginPath(); ctx.arc(cx, cy, R, a0, a1);
-          ctx.strokeStyle = ARC_COL[k]; ctx.lineWidth = (7 + 5 * w[k]) * dpr; ctx.lineCap = 'butt'; ctx.stroke();
+          ctx.strokeStyle = arcCol(k); ctx.lineWidth = (7 + 5 * w[k]) * dpr; ctx.lineCap = 'butt'; ctx.stroke();
           const am = ang(k / 4);
-          ctx.fillStyle = '#e8dcc4'; ctx.font = `${11 * dpr}px "Songti SC", serif`;
+          ctx.fillStyle = T().ink; ctx.font = `${11 * dpr}px "Songti SC", serif`;
           ctx.fillText(VALS[k], cx + Math.cos(am) * (R + 17 * dpr), cy + Math.sin(am) * (R + 17 * dpr));
         }
         const a = ang(p), px = cx + Math.cos(a) * R, py = cy + Math.sin(a) * R;
         ctx.beginPath(); ctx.arc(px, py, 6.5 * dpr, 0, 7);
-        ctx.fillStyle = '#fff3d6'; ctx.fill(); ctx.strokeStyle = '#14110f'; ctx.lineWidth = 2 * dpr; ctx.stroke();
-        ctx.fillStyle = '#e8dcc4'; ctx.font = `${15 * dpr}px "Songti SC", serif`;
+        ctx.fillStyle = T().dot; ctx.fill(); ctx.strokeStyle = T().bg; ctx.lineWidth = 2 * dpr; ctx.stroke();
+        ctx.fillStyle = T().ink; ctx.font = `${15 * dpr}px "Songti SC", serif`;
         ctx.fillText(`${LINE_NAMES[i]}爻`, cx, cy - 8 * dpr);
-        ctx.fillStyle = D.isMoving(v) ? '#d1503a' : '#8f8571'; ctx.font = `${12 * dpr}px "Songti SC", serif`;
+        ctx.fillStyle = D.isMoving(v) ? T().red : T().dim; ctx.font = `${12 * dpr}px "Songti SC", serif`;
         ctx.fillText(`${v} ${D.NAMES[v]}`, cx, cy + 10 * dpr);
       }
     }
@@ -74,7 +75,7 @@
       PAIRS.forEach(([a, b], j) => {
         const ox = W * (j + 0.5), oy = H * 0.46, k = W * 0.2;
         const P = (u, v) => { const [x, y] = proj(surf(u, v)); return [ox + x * k, oy + y * k]; };
-        ctx.lineWidth = dpr * 0.8; ctx.strokeStyle = 'rgba(194,161,95,.2)';
+        ctx.lineWidth = dpr * 0.8; ctx.strokeStyle = `rgba(${T().goldRgb},.2)`;
         for (let iu = 0; iu < 20; iu++) {
           ctx.beginPath();
           for (let s = 0; s <= 24; s++) { const [x, y] = P((iu / 20) * 2 * Math.PI, (s / 24) * 2 * Math.PI); s ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
@@ -87,14 +88,14 @@
         }
         // u ← 下爻相位(初二三)，v ← 上爻相位(四五上)；同样 p=0 起于"左"
         const u = ang(D.wrap(state.p[a])) , v = ang(D.wrap(state.p[b]));
-        ctx.strokeStyle = 'rgba(209,80,58,.9)'; ctx.lineWidth = dpr * 1.6;
+        ctx.strokeStyle = `rgba(${T().redRgb},.9)`; ctx.lineWidth = dpr * 1.6;
         ctx.beginPath(); for (let s = 0; s <= 48; s++) { const [x, y] = P(u, (s / 48) * 2 * Math.PI); s ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke();
-        ctx.strokeStyle = 'rgba(232,220,196,.9)';
+        ctx.strokeStyle = `rgba(${T().inkRgb},.9)`;
         ctx.beginPath(); for (let s = 0; s <= 48; s++) { const [x, y] = P((s / 48) * 2 * Math.PI, v); s ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke();
         const [px, py] = P(u, v);
-        ctx.beginPath(); ctx.arc(px, py, 6 * dpr, 0, 7); ctx.fillStyle = '#fff3d6'; ctx.fill();
-        ctx.strokeStyle = '#d1503a'; ctx.lineWidth = 2 * dpr; ctx.stroke();
-        ctx.fillStyle = '#8f8571'; ctx.font = `${12 * dpr}px "Songti SC", serif`; ctx.textAlign = 'center';
+        ctx.beginPath(); ctx.arc(px, py, 6 * dpr, 0, 7); ctx.fillStyle = T().dot; ctx.fill();
+        ctx.strokeStyle = T().red; ctx.lineWidth = 2 * dpr; ctx.stroke();
+        ctx.fillStyle = T().dim; ctx.font = `${12 * dpr}px "Songti SC", serif`; ctx.textAlign = 'center';
         ctx.fillText(`${LINE_NAMES[a]} 应 ${LINE_NAMES[b]}`, ox, H - 8 * dpr);
       });
     }

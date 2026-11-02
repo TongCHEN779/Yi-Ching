@@ -4,7 +4,8 @@
   const LW = 400, LH = 150;        // 逻辑坐标，画布按此缩放
   const S = 5.6, GAP = 5, M = 12;  // 策距、组间隙、边距
   const Y_MAIN = 118, Y_HANG = 72, Y_PILE = 28;
-  const COL = { base: '#e8dcc4', hang: '#c2a15f', rem: '#d1503a', pile: '#7d7360' };
+  // 颜色用键名，绘制时再按当前主题取值
+  const COL = { base: 'ink', hang: 'gold', rem: 'red', pile: 'dim' };
   const SPEEDS = { slow: { t: 1.0, rate: 0.12 }, fast: { t: 0.3, rate: 0.3 }, instant: { t: 0, rate: 1 } };
 
   function create(canvas) {
@@ -90,16 +91,17 @@
         if (Math.abs(s.tx - s.x) < 0.05) s.x = s.tx;
         if (Math.abs(s.ty - s.y) < 0.05) s.y = s.ty;
       }
+      const T = root.Theme.c;
       ctx.lineCap = 'round'; ctx.lineWidth = 1.7;
       for (const s of st) {
         const half = s.ty < 50 ? 10 : 16;
-        ctx.strokeStyle = s.c;
+        ctx.strokeStyle = T[s.c];
         ctx.beginPath(); ctx.moveTo(s.x, s.y - half); ctx.lineTo(s.x, s.y + half); ctx.stroke();
       }
       ctx.font = '15px "Songti SC", serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-      ctx.fillStyle = '#c2a15f'; ctx.fillText(title, M, 6);
-      ctx.fillStyle = '#e8dcc4'; ctx.fillText(label, M, 26);
-      if (pileCount) { ctx.textAlign = 'right'; ctx.fillStyle = '#7d7360'; ctx.fillText(`掛扐 ${pileCount}`, LW - M, 44); }
+      ctx.fillStyle = T.gold; ctx.fillText(title, M, 6);
+      ctx.fillStyle = T.ink; ctx.fillText(label, M, 26);
+      if (pileCount) { ctx.textAlign = 'right'; ctx.fillStyle = T.dim; ctx.fillText(`掛扐 ${pileCount}`, LW - M, 44); }
     }
 
     bundle([...Array(49).keys()]); snapAll();
