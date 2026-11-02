@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>易经 · 连续卦象</title>
+<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<header>
+  <h1>易<span>·</span>经</h1>
+  <p class="sub">六十四卦是六维立方体的顶点。起一卦，是落在一个顶点上；拖动爻线，是走进顶点之间。</p>
+</header>
+
+<main>
+  <section class="panel" id="ritual">
+    <h2>起卦</h2>
+    <div class="seg">
+      <label><input type="radio" name="method" value="yarrow" checked> 大衍筮法</label>
+      <label><input type="radio" name="method" value="coins"> 三钱法</label>
+    </div>
+    <button id="cast" class="primary">起 卦</button>
+    <div id="stalkbox">
+      <canvas id="stalks"></canvas>
+      <div class="seg speed">动画
+        <label><input type="radio" name="speed" value="slow"> 慢</label>
+        <label><input type="radio" name="speed" value="fast" checked> 快</label>
+        <label><input type="radio" name="speed" value="instant"> 跳过</label>
+      </div>
+    </div>
+
+    <h2>卦象 <small>拖动爻线，改变阴阳比例</small></h2>
+    <div id="yao"></div>
+    <div id="tcontrol" hidden>
+      <label for="t">变 <small>本卦 → 之卦</small></label>
+      <input id="t" type="range" min="0" max="1" step="0.001" value="0">
+    </div>
+
+    <h2>过程</h2>
+    <ol id="log" class="log"><li class="muted">尚未起卦</li></ol>
+  </section>
+
+  <section class="panel" id="space">
+    <div class="tabs" role="tablist">
+      <button data-mode="cube" class="on">立方体 <small>阴阳连续</small></button>
+      <button data-mode="torus">环面 <small>四象循环</small></button>
+    </div>
+    <div id="view-cube">
+      <h2>六维空间 <small>下卦 × 上卦，各为一个三维立方体 · 拖动旋转，点击顶点跳转</small></h2>
+      <div class="cubes">
+        <figure><canvas id="cube-lo"></canvas><figcaption>下卦（初·二·三爻）</figcaption></figure>
+        <figure><canvas id="cube-up"></canvas><figcaption>上卦（四·五·上爻）</figcaption></figure>
+      </div>
+    </div>
+    <div id="view-torus" hidden>
+      <h2>T⁶ 环面 <small>每爻一个四象环：少阳 → 老阳 → 少阴 → 老阴，顺时针 · 拖动圆点</small></h2>
+      <canvas id="tori"></canvas>
+      <canvas id="rings"></canvas>
+      <div class="flow">
+        <button id="flow">▶ 流转</button>
+        <small>各爻以略不同的节律沿环转动；越过"老"，就是变。</small>
+      </div>
+    </div>
+    <h2>伏羲方图 <small>行 = 下卦，列 = 上卦 · 亮度 = 权重</small></h2>
+    <div id="grid"></div>
+  </section>
+
+  <section class="panel" id="text">
+    <div id="reading"></div>
+    <h2>卦辞 <small>按权重显隐</small></h2>
+    <div id="cards"></div>
+  </section>
+</main>
+
+<footer>原文取自维基文库《周易》。连续状态下的"叠加卦辞"只是权重显示，并非新的经文。</footer>
+
+<script src="src/data.js"></script>
+<script src="src/divination.js"></script>
+<script src="src/stalks.js"></script>
+<script src="src/torus.js"></script>
+<script src="src/app.js"></script>
+</body>
+</html>
