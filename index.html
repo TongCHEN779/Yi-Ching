@@ -31,6 +31,8 @@
 <main>
   <section class="panel" id="ritual">
     <h2>起卦</h2>
+    <label class="q-label" for="question">想问什么？ <small>可选 · 起卦前先静心默念</small></label>
+    <textarea id="question" rows="2" maxlength="200" placeholder="例：这份新工作值得接受吗？"></textarea>
     <div class="seg">
       <label><input type="radio" name="method" value="yarrow" checked> 大衍筮法</label>
       <label><input type="radio" name="method" value="coins"> 三钱法</label>
@@ -84,6 +86,14 @@
 
   <section class="panel" id="text">
     <div id="reading"></div>
+    <div id="promptbox" hidden>
+      <h2>解读提示词 <small>复制后贴给你自己的 AI 助手</small></h2>
+      <button id="copy" type="button" class="primary small">复制提示词</button>
+      <details>
+        <summary>预览提示词</summary>
+        <textarea id="prompt-text" rows="12" readonly></textarea>
+      </details>
+    </div>
     <h2>卦辞 <small>按权重显隐</small></h2>
     <div id="cards"></div>
   </section>
@@ -92,7 +102,7 @@
 <footer>原文取自维基文库《周易》。连续状态下的"叠加卦辞"只是权重显示，并非新的经文。</footer>
 
 <script>
-  ['theme', 'data', 'divination', 'stalks', 'torus', 'app'].forEach(function (n) {
+  ['theme', 'data', 'divination', 'prompt', 'stalks', 'torus', 'app'].forEach(function (n) {
     document.write('<script src="src/' + n + '.js?v=' + V + '"><\/script>');
   });
 </script>

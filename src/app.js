@@ -27,6 +27,7 @@
     cast: null,                 // { values:[], done, ben, zhi, moving }
     t: 0,
     busy: false,
+    method: null,               // 本次起卦方式，供提示词使用
     detached: false,            // 手动改动后，"变"滑块不再对应当前点
     castPhaseValid: false,      // 当前相位仍等于起卦结果
     flow: false,
@@ -280,15 +281,47 @@
     const t = wz ? `${top(w)} → ${top(wz)}` : top(w);
     if ($('#chip').textContent !== t) $('#chip').textContent = t;
   }
+  const esc = (s) => s.replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+  const question = () => $('#question').value.trim();
   let lastReading = '';
   function renderReading() {
     const r = reading(), root = $('#reading');
     if (!r || !r.lines) { if (lastReading) root.innerHTML = ''; lastReading = ''; return; }
+    const q = question();
     const html = `<h2>断语</h2>
+      ${q ? `<p class="q">所问：${esc(q)}</p>` : ''}
       <p class="route">${glyph(r.ben.n)} ${r.ben.name}<span class="arrow">${r.ben === r.zhi ? '' : '→'}</span>${r.ben === r.zhi ? '' : `${glyph(r.zhi.n)} ${r.zhi.name}`}</p>
       <small>${r.rule}</small>
       ${r.lines.map((l) => `<div class="pick"><small>${l.h.name}卦</small>${l.text}${l.xiao ? `<small>象曰：${l.xiao}</small>` : ''}</div>`).join('')}`;
     if (html !== lastReading) { root.innerHTML = html; lastReading = html; }
+  }
+
+  // ---------- 解读提示词 ----------
+  let lastPrompt = '';
+  function renderPrompt() {
+    const r = reading(), box = $('#promptbox');
+    const ok = r && r.lines;
+    box.hidden = !ok;
+    if (!ok) { lastPrompt = ''; return; }
+    const c = getCast();
+    const text = window.Prompt.build({
+      question: question(), method: c === state.cast ? state.method : null,
+      cast: c, reading: r, names: D.NAMES,
+    });
+    if (text !== lastPrompt) { $('#prompt-text').value = text; lastPrompt = text; $('#copy').textContent = '复制提示词'; }
+  }
+  async function copyPrompt() {
+    const ta = $('#prompt-text'), btn = $('#copy');
+    let ok = false;
+    try { await navigator.clipboard.writeText(ta.value); ok = true; }
+    catch (e) {
+      const d = ta.closest('details'), was = d.open; d.open = true;   // 隐藏元素无法选中
+      ta.focus(); ta.select();
+      try { ok = document.execCommand('copy'); } catch (e2) { /* 交给下方提示 */ }
+      d.open = was;
+    }
+    btn.textContent = ok ? '已复制 ✓' : '复制失败，请展开预览后手动复制';
+    setTimeout(() => { btn.textContent = '复制提示词'; }, 2500);
   }
 
   // ---------- 起卦流程 ----------
@@ -312,6 +345,7 @@
     if (state.busy) return;
     state.busy = true; $('#cast').disabled = true; state.flow = false; $('#flow').textContent = '▶ 流转';
     const method = document.querySelector('input[name=method]:checked').value;
+    state.method = method;
     state.cast = { values: [], done: false };
     state.detached = false; state.castPhaseValid = false;
     state.x.fill(0.5); state.z.fill(0.5); state.p.fill(0.375); state.t = 0; $('#t').value = 0;
@@ -344,7 +378,7 @@
   function render() {
     if (isTorus()) deriveFromPhase(); else state.z = state.x.slice();
     const w = weights(), wz = isTorus() ? weights(state.z) : null;
-    updateControls(); renderYao(); renderGrid(w, wz); renderCards(w, wz); renderReading(); renderChip(w, wz);
+    updateControls(); renderYao(); renderGrid(w, wz); renderCards(w, wz); renderReading(); renderPrompt(); renderChip(w, wz);
   }
 
   function setMode(m) {
@@ -371,6 +405,8 @@
     onGrab: () => { state.flow = false; $('#flow').textContent = '▶ 流转'; },
   });
   $('#cast').addEventListener('click', cast);
+  $('#copy').addEventListener('click', copyPrompt);
+  $('#question').addEventListener('input', () => { renderReading(); renderPrompt(); });
   $('#t').addEventListener('input', (e) => {
     state.t = +e.target.value; applyT();
     state.castPhaseValid = state.t === 0; state.z = state.x.slice();
