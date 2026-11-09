@@ -87,8 +87,28 @@
   <section class="panel" id="text">
     <div id="reading"></div>
     <div id="promptbox" hidden>
-      <h2>解读提示词 <small>复制后贴给你自己的 AI 助手</small></h2>
-      <button id="copy" type="button" class="primary small">复制提示词</button>
+      <h2>解读 <small>交给 AI 结合你的问题阐释</small></h2>
+      <div class="ai-row">
+        <label for="ai-model">模型</label>
+        <select id="ai-model">
+          <option value="qwen3.8-flash">通义千问 3.8 Flash · 便宜（默认）</option>
+          <option value="deepseek-flash">DeepSeek Flash · 便宜</option>
+          <option value="claude-haiku-5-5">Claude Haiku 5.5 · 便宜</option>
+          <option value="gpt-6-luna">GPT-6 Luna · 便宜</option>
+          <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
+          <option value="qwen3.8-max">通义千问 3.8 Max · 质量更好</option>
+          <option value="claude-sonnet-5-5">Claude Sonnet 5.5 · 质量更好（费用约 20 倍）</option>
+        </select>
+      </div>
+      <div class="actions">
+        <button id="ai-run" type="button" class="primary small">在线解读</button>
+        <button id="copy" type="button" class="ghost">复制提示词</button>
+      </div>
+      <p class="ai-note"><small>点“在线解读”后，你的问题和卦象会发送给 Puter 及所选模型的提供方。需要登录 Puter 账号，用量计入你自己的 Puter 免费额度，本站不经手。不想发送，可以只复制提示词。</small></p>
+      <div id="ai-out" hidden aria-live="polite">
+        <div class="ai-head"><span id="ai-status"></span><button id="ai-stop" type="button" class="ghost" hidden>停止</button></div>
+        <div id="ai-text"></div>
+      </div>
       <details>
         <summary>预览提示词</summary>
         <textarea id="prompt-text" rows="12" readonly></textarea>
@@ -102,7 +122,7 @@
 <footer>原文取自维基文库《周易》。连续状态下的"叠加卦辞"只是权重显示，并非新的经文。</footer>
 
 <script>
-  ['theme', 'data', 'divination', 'prompt', 'stalks', 'torus', 'app'].forEach(function (n) {
+  ['theme', 'data', 'divination', 'prompt', 'ai', 'stalks', 'torus', 'app'].forEach(function (n) {
     document.write('<script src="src/' + n + '.js?v=' + V + '"><\/script>');
   });
 </script>

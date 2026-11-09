@@ -346,6 +346,7 @@
     state.busy = true; $('#cast').disabled = true; state.flow = false; $('#flow').textContent = '▶ 流转';
     const method = document.querySelector('input[name=method]:checked').value;
     state.method = method;
+    if (window.Ai) window.Ai.reset();
     state.cast = { values: [], done: false };
     state.detached = false; state.castPhaseValid = false;
     state.x.fill(0.5); state.z.fill(0.5); state.p.fill(0.375); state.t = 0; $('#t').value = 0;

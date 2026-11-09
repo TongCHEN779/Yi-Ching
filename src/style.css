@@ -162,3 +162,17 @@ textarea:focus { outline: none; border-color: var(--gold); }
 #promptbox summary { cursor: pointer; }
 button.primary.small { font-size: 15px; letter-spacing: .3em; padding: 8px; }
 #reading .q { margin: 0 0 8px; color: var(--dim); font-size: 14px; }
+
+/* 在线解读 */
+.ai-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 14px; color: var(--gold); }
+.ai-row select { flex: 1; min-width: 0; font: inherit; font-size: 14px; color: var(--ink); background: var(--canvas); border: 1px solid var(--line); border-radius: 6px; padding: 7px 8px; }
+.actions { display: flex; gap: 8px; }
+.actions button { flex: 1; width: auto; }
+button.ghost { font: inherit; font-size: 14px; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; cursor: pointer; }
+button.ghost:hover { border-color: var(--gold); }
+.ai-note { margin: 8px 0; line-height: 1.5; }
+#ai-out { margin: 10px 0; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--canvas); }
+.ai-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--dim); margin-bottom: 6px; }
+.ai-head button { padding: 3px 10px; font-size: 12px; }
+#ai-text { white-space: pre-wrap; line-height: 1.8; font-size: 15px; word-break: break-word; }
+@media (max-width: 600px) { .actions { flex-direction: column; } }
