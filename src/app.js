@@ -407,6 +407,16 @@
   });
   $('#cast').addEventListener('click', cast);
   $('#copy').addEventListener('click', copyPrompt);
+  // 说明气泡：电脑上悬浮即显示；手机没有悬浮，点“？”切换，点别处或按 Esc 收起
+  const closeTips = () => document.querySelectorAll('.opt.open').forEach((o) => o.classList.remove('open'));
+  document.querySelectorAll('.help').forEach((b) => b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const opt = b.closest('.opt'), wasOpen = opt.classList.contains('open');
+    closeTips();
+    if (!wasOpen) opt.classList.add('open');
+  }));
+  document.addEventListener('click', closeTips);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTips(); });
   $('#question').addEventListener('input', () => { renderReading(); renderPrompt(); });
   $('#t').addEventListener('input', (e) => {
     state.t = +e.target.value; applyT();

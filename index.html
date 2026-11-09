@@ -34,8 +34,44 @@
     <label class="q-label" for="question">想问什么？ <small>可选 · 起卦前先静心默念</small></label>
     <textarea id="question" rows="2" maxlength="200" placeholder="例：这份新工作值得接受吗？"></textarea>
     <div class="seg">
-      <label><input type="radio" name="method" value="yarrow" checked> 大衍筮法</label>
-      <label><input type="radio" name="method" value="coins"> 三钱法</label>
+      <span class="opt">
+        <label><input type="radio" name="method" value="yarrow" checked> 大衍筮法</label>
+        <button type="button" class="help" aria-label="大衍筮法的说明" aria-describedby="tip-yarrow">?</button>
+        <div class="tip" id="tip-yarrow" role="tooltip">
+          <p><b>大衍筮法（蓍草）</b>　《系辞》记载的传统方法，最繁复，也最郑重。</p>
+          <ol>
+            <li>取蓍草 50 根，拿走 1 根不用，用 49 根。</li>
+            <li>每一爻要经过<b>三“变”</b>，每一变四步：<br>
+              <b>分二</b>：随意把草分成左右两堆；<br>
+              <b>挂一</b>：从右堆取 1 根，挂在一旁；<br>
+              <b>揲四</b>：左右两堆各按 4 根一数，记下余数（整除算 4）；<br>
+              <b>归奇</b>：把挂的 1 根和两堆余数一起放到一边。</li>
+            <li>第一变去掉 5 或 9 根，余 44 或 40；第二、三变各去 4 或 8 根。</li>
+            <li>三变之后剩 24、28、32、36 根，除以 4 得 <b>6、7、8、9</b>：6 老阴（动）、7 少阳、8 少阴、9 老阳（动）。</li>
+            <li>三变得一爻，六爻共 18 变，自下而上排成一卦。</li>
+          </ol>
+          <p class="note">6、7、8、9 出现的概率是 1/16、5/16、7/16、3/16。点“起卦”后，下面的画面会逐步演示每一变。</p>
+          <p class="note">老阴、老阳是动爻，会变成相反的爻：六爻原样是本卦，动爻变过之后是之卦，再按动爻数量取辞（见“断语”）。</p>
+        </div>
+      </span>
+      <span class="opt">
+        <label><input type="radio" name="method" value="coins"> 三钱法</label>
+        <button type="button" class="help" aria-label="三钱法的说明" aria-describedby="tip-coins">?</button>
+        <div class="tip" id="tip-coins" role="tooltip">
+          <p><b>三钱法（金钱卦）</b>　后世流行的简便方法。</p>
+          <ol>
+            <li>取三枚铜钱，一次掷出，记下一爻；共掷六次，自下而上排成一卦。</li>
+            <li>本站的约定：<b>正面记 3，反面记 2</b>，三枚相加：<br>
+              6 = 三反，<b>老阴</b>（动）<br>
+              7 = 一正二反，<b>少阳</b><br>
+              8 = 二正一反，<b>少阴</b><br>
+              9 = 三正，<b>老阳</b>（动）</li>
+          </ol>
+          <p class="note">6、7、8、9 出现的概率是 1/8、3/8、3/8、1/8，比大衍筮法更平均，动爻也更常出现。</p>
+          <p class="note">历代对正反面如何记数有不同的约定，这里只是其中一种。</p>
+          <p class="note">老阴、老阳是动爻，会变成相反的爻：六爻原样是本卦，动爻变过之后是之卦，再按动爻数量取辞（见“断语”）。</p>
+        </div>
+      </span>
     </div>
     <button id="cast" class="primary">起 卦</button>
     <div id="stalkbox">
